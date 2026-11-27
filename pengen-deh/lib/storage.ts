@@ -21,8 +21,6 @@ export class LocalStorageRepository implements WishlistRepository {
   async clear() { localStorage.removeItem(KEY); }
 }
 
-export const repository: WishlistRepository = new LocalStorageRepository();
-
 /* ---------- Preferensi tampilan (tetap lokal per perangkat) ---------- */
 export const prefs = {
   getHidden: () => { try { return localStorage.getItem("pengen-deh:hidden") === "1"; } catch { return false; } },
