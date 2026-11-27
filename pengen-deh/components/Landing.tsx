@@ -89,7 +89,10 @@ export default function Landing({ onStart }: { onStart: (m: Mode) => void }) {
         <button className="btn bg-ink !px-6 !py-3 !text-bg" onClick={() => onStart("daftar")}>Mulai gratis</button>
       </section>
 
-      <footer className="mt-10 text-center text-sm font-medium text-muted">Sedikit demi sedikit, lama-lama jadi bukit. 💛</footer>
+      <footer className="mt-10 space-y-1 text-center text-sm font-medium text-muted">
+        <p>Sedikit demi sedikit, lama-lama jadi bukit. 💛</p>
+        <p className="font-bold text-ink">Created by Dani</p>
+      </footer>
     </div>
   );
 }
