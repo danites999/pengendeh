@@ -24,12 +24,10 @@ export default function AuthGate() {
       : <LoginScreen key={view} initialMode={view} onBack={() => setView("landing")} />;
   }
   return (
-    <>
-      <AppShell key={session.user.id} />
-      <div className="pb-24 text-center text-xs text-muted md:pb-8">
-        Masuk sebagai <b>{session.user.email?.split("@")[0]}</b> ·{" "}
-        <button className="underline" onClick={() => { void supabase.auth.signOut(); setView("landing"); }}>Keluar</button>
-      </div>
-    </>
+    <AppShell
+      key={session.user.id}
+      username={session.user.email?.split("@")[0]}
+      onLogout={() => { void supabase.auth.signOut(); setView("landing"); }}
+    />
   );
 }
