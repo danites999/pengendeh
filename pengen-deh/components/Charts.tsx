@@ -6,7 +6,7 @@ import { categoryTotals, isDone, monthlySeries, shortRp } from "@/lib/calculator
 import { catOf } from "@/lib/categories";
 import { PrivacyContext, useRpText } from "./Privacy";
 
-const tick = { fill: "var(--muted)", fontSize: 11 };
+const tick = { fill: "rgb(var(--muted))", fontSize: 11 };
 
 export default function Charts({ goals }: { goals: Goal[] }) {
   const hide = useContext(PrivacyContext);
@@ -22,7 +22,7 @@ export default function Charts({ goals }: { goals: Goal[] }) {
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <Pie data={pie} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="85%" stroke="var(--line)" strokeWidth={2}>
+              <Pie data={pie} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="85%" stroke="rgb(var(--line))" strokeWidth={2}>
                 {pie.map((p) => <Cell key={p.name} fill={p.color} />)}
               </Pie>
               <Tooltip formatter={(v) => rp(Number(v))} />
@@ -38,7 +38,7 @@ export default function Charts({ goals }: { goals: Goal[] }) {
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={series} margin={{ left: 0, right: 8, top: 8 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--muted)" strokeOpacity={0.3} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgb(var(--muted))" strokeOpacity={0.3} />
               <XAxis dataKey="label" tick={tick} />
               <YAxis tick={tick} width={48} tickFormatter={(v) => (hide ? "•" : shortRp(Number(v)))} />
               <Tooltip formatter={(v) => rp(Number(v))} />
