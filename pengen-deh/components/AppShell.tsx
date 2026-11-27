@@ -20,7 +20,8 @@ const TABS: { id: Tab; label: string; emoji: string }[] = [
   { id: "statistik", label: "Statistik", emoji: "📊" }, { id: "pengaturan", label: "Pengaturan", emoji: "⚙️" },
 ];
 
-export default function AppShell() {
+export default function AppShell({ username, onLogout }: { username?: string; onLogout?: () => void }) {
+  const name = username ? username.charAt(0).toUpperCase() + username.slice(1) : "";
   const [goals, setGoals] = useState<Goal[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [tab, setTab] = useState<Tab>("impian");
@@ -97,11 +98,13 @@ export default function AppShell() {
           <div className="flex gap-2">
             <button className="btn" onClick={toggleHidden} aria-pressed={hidden}>{hidden ? "🙈" : "👁️"}<span className="hidden sm:inline">{hidden ? "Tampilkan nominal" : "Sembunyikan nominal"}</span></button>
             <button className="btn" onClick={toggleDark} aria-label="Ganti mode terang/gelap">{dark ? "☀️" : "🌙"}</button>
+            {onLogout && <button className="btn" onClick={onLogout}>Keluar</button>}
           </div>
         </header>
 
         {tab === "impian" && (
           <div className="space-y-6">
+            {name && <h2 className="font-display text-2xl font-extrabold sm:text-3xl">Halo, {name}! 👋</h2>}
             <section className="card bg-mango p-5 text-[#16132e] sm:p-8">
               <h1 className="font-display text-4xl font-extrabold sm:text-6xl">Mau Apa ya?</h1>
               <p className="mt-1 max-w-xl font-medium">Pilih jenisnya, ketik yang spesifik, lalu kita hitung nabungnya bareng.</p>
