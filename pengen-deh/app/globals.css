@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Palet: tinta indigo, mangga, permen pink, mint. Gaya "stiker" dengan garis tebal & bayangan keras. */
+:root {
+  --bg: #f2f4ff; --surface: #ffffff; --ink: #16132e; --muted: #5b5878;
+  --line: #16132e; --shadow: #16132e; --mango: #ffb627; --pink: #ff5c8a; --mint: #27c3a0;
+}
+.dark {
+  --bg: #0e0d1c; --surface: #1a1832; --ink: #f1efff; --muted: #a4a1c6;
+  --line: #8f8bc9; --shadow: #000000;
+}
+
+body { background: var(--bg); }
+:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+
+@layer components {
+  .card { @apply rounded-2xl border-2 border-line bg-surface; box-shadow: 4px 4px 0 var(--shadow); }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-line bg-surface px-4 py-2 text-sm font-bold text-ink transition active:translate-x-[2px] active:translate-y-[2px];
+    box-shadow: 2px 2px 0 var(--shadow);
+  }
+  .btn:active { box-shadow: 0 0 0 var(--shadow); }
+  .btn-primary { @apply bg-mango text-[#16132e]; }
+  .btn-danger { @apply bg-pink text-white; }
+  .input { @apply w-full rounded-xl border-2 border-line bg-bg px-3 py-2 text-base text-ink placeholder:text-muted/70; }
+  .pill { @apply inline-flex items-center gap-1.5 rounded-full border-2 border-line bg-surface px-3 py-1.5 text-sm font-semibold text-ink transition; }
+  .pill[aria-pressed="true"] { @apply bg-ink text-bg; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
