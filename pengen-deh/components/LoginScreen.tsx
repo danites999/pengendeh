@@ -7,8 +7,8 @@ const translate = (m: string) =>
   /already registered/i.test(m) ? "Username sudah dipakai. Coba yang lain, atau pilih Masuk." :
   `Gagal: ${m}`;
 
-export default function LoginScreen() {
-  const [mode, setMode] = useState<"masuk" | "daftar">("masuk");
+export default function LoginScreen({ initialMode = "masuk", onBack }: { initialMode?: "masuk" | "daftar"; onBack?: () => void }) {
+  const [mode, setMode] = useState<"masuk" | "daftar">(initialMode);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -34,6 +34,7 @@ export default function LoginScreen() {
   return (
     <main className="grid min-h-dvh place-items-center px-4">
       <form onSubmit={submit} className="card w-full max-w-sm space-y-4 p-6">
+        {onBack && <button type="button" className="text-sm font-semibold underline" onClick={onBack}>‹ Kembali</button>}
         <div>
           <h1 className="font-display text-4xl font-extrabold">Pengen Deh<span className="text-pink">.</span></h1>
           <p className="mt-1 text-sm text-muted">{mode === "masuk" ? "Masuk biar impianmu muncul di semua perangkat." : "Buat akun baru, cukup username dan password."}</p>
