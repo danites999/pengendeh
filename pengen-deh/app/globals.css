@@ -4,24 +4,24 @@
 
 /* Palet: tinta indigo, mangga, permen pink, mint. Gaya "stiker" dengan garis tebal & bayangan keras. */
 :root {
-  --bg: #f2f4ff; --surface: #ffffff; --ink: #16132e; --muted: #5b5878;
-  --line: #16132e; --shadow: #16132e; --mango: #ffb627; --pink: #ff5c8a; --mint: #27c3a0;
+  --bg: 242 244 255; --surface: 255 255 255; --ink: 22 19 46; --muted: 91 88 120;
+  --line: 22 19 46; --shadow: 22 19 46; --mango: 255 182 39; --pink: 255 92 138; --mint: 39 195 160;
 }
 .dark {
-  --bg: #0e0d1c; --surface: #1a1832; --ink: #f1efff; --muted: #a4a1c6;
-  --line: #8f8bc9; --shadow: #000000;
+  --bg: 14 13 28; --surface: 26 24 50; --ink: 241 239 255; --muted: 164 161 198;
+  --line: 143 139 201; --shadow: 0 0 0;
 }
 
-body { background: var(--bg); }
-:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+body { background: rgb(var(--bg)); }
+:focus-visible { outline: 3px solid rgb(var(--pink)); outline-offset: 2px; }
 
 @layer components {
-  .card { @apply rounded-2xl border-2 border-line bg-surface; box-shadow: 4px 4px 0 var(--shadow); }
+  .card { @apply rounded-2xl border-2 border-line bg-surface; box-shadow: 4px 4px 0 rgb(var(--shadow)); }
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-xl border-2 border-line bg-surface px-4 py-2 text-sm font-bold text-ink transition active:translate-x-[2px] active:translate-y-[2px];
-    box-shadow: 2px 2px 0 var(--shadow);
+    box-shadow: 2px 2px 0 rgb(var(--shadow));
   }
-  .btn:active { box-shadow: 0 0 0 var(--shadow); }
+  .btn:active { box-shadow: 0 0 0 rgb(var(--shadow)); }
   .btn-primary { @apply bg-mango text-[#16132e]; }
   .btn-danger { @apply bg-pink text-white; }
   .input { @apply w-full rounded-xl border-2 border-line bg-bg px-3 py-2 text-base text-ink placeholder:text-muted/70; }
