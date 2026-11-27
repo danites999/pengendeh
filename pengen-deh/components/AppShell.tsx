@@ -162,7 +162,10 @@ export default function AppShell() {
             onReset={() => { if (confirm("Hapus SEMUA data di perangkat ini? Ini tidak bisa dibatalkan.")) { commit([]); flash("Semua data dihapus."); } }} />
         )}
 
-        <footer className="mt-10 text-center text-sm font-medium text-muted">Sedikit demi sedikit, lama-lama jadi bukit. Satu setoran hari ini bikin impianmu makin dekat. 💛</footer>
+        <footer className="mt-10 space-y-1 text-center text-sm font-medium text-muted">
+          <p>Sedikit demi sedikit, lama-lama jadi bukit. Satu setoran hari ini bikin impianmu makin dekat. 💛</p>
+          <p className="font-bold text-ink">Created by Dani</p>
+        </footer>
       </div>
 
       {nav("fixed inset-x-0 bottom-0 z-40 flex gap-1 border-t-2 border-line bg-surface p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] md:hidden")}
