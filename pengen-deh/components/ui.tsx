@@ -33,11 +33,11 @@ export function Field({ label, error, children }: { label: string; error?: strin
 }
 
 /** Input angka dengan pemisah ribuan (1.500.000). Hanya menerima digit. */
-export function NumInput({ value, onChange, placeholder = "0", prefix = "Rp" }: { value: number; onChange: (n: number) => void; placeholder?: string; prefix?: string }) {
+export function NumInput({ value, onChange, onBlur, placeholder = "0", prefix = "Rp" }: { value: number; onChange: (n: number) => void; onBlur?: () => void; placeholder?: string; prefix?: string }) {
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm font-bold text-muted">{prefix}</span>
-      <input className="input" inputMode="numeric" placeholder={placeholder}
+      <input className="input" inputMode="numeric" placeholder={placeholder} onBlur={onBlur}
         value={value ? value.toLocaleString("id-ID") : ""}
         onChange={(e) => onChange(Number(e.target.value.replace(/\D/g, "").slice(0, 12)) || 0)} />
     </div>
