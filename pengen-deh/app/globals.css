@@ -29,4 +29,6 @@ body { background: rgb(var(--bg)); }
   .pill[aria-pressed="true"] { @apply bg-ink text-bg; }
 }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.confetti { position: absolute; top: -14px; width: 8px; height: 14px; border-radius: 2px; animation: confetti-fall linear infinite; }
+@keyframes confetti-fall { to { transform: translateY(460px) rotate(540deg); } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } .confetti { display: none; } }
