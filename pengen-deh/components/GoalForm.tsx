@@ -58,7 +58,7 @@ export default function GoalForm({ goal, preset, onSave, onClose }: Props) {
     onSave({
       id: goal?.id ?? uid(), title: title.trim(), category, mainAmount: main, extras: extras.map((x) => ({ ...x, label: x.label.trim() })),
       startDate: start, targetDate: target, initialBalance: initialBal, frequency: freq,
-      deposits: goal?.deposits ?? [], createdAt: goal?.createdAt ?? new Date().toISOString(),
+      deposits: goal?.deposits ?? [], createdAt: goal?.createdAt ?? new Date().toISOString(), purchasedAt: goal?.purchasedAt,
     });
   }
 
