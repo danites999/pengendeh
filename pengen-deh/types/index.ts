@@ -21,6 +21,7 @@ export interface Goal {
   deposits: Deposit[];
   createdAt: string;
   isSample?: boolean;
+  purchasedAt?: string; // YYYY-MM-DD, terisi saat ditandai "sudah dibeli" (masuk Riwayat)
 }
 
-export interface AppData { version: 1; goals: Goal[] }
+export interface AppData { version: 1; goals: Goal[]; monthlyCapacity?: number }
