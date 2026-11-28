@@ -36,7 +36,8 @@ export function parseBackup(text: string): AppData {
   try { raw = JSON.parse(text); } catch { throw new Error("File bukan JSON yang valid."); }
   const goals = (raw as { goals?: unknown } | null)?.goals;
   if (!Array.isArray(goals)) throw new Error("Format backup tidak dikenali: daftar impian tidak ditemukan.");
-  return { version: 1, goals: goals.map(normalizeGoal) };
+  const cap = (raw as { monthlyCapacity?: unknown }).monthlyCapacity;
+  return { version: 1, goals: goals.map(normalizeGoal), monthlyCapacity: typeof cap === "number" && cap > 0 ? cap : undefined };
 }
 
 function normalizeGoal(x: unknown, i: number): Goal {
@@ -56,6 +57,7 @@ function normalizeGoal(x: unknown, i: number): Goal {
     frequency: freqs.includes(g.frequency as Frequency) ? (g.frequency as Frequency) : "bulanan",
     deposits: (Array.isArray(g.deposits) ? g.deposits : []).filter((d) => d && typeof d.amount === "number" && typeof d.date === "string"),
     createdAt: typeof g.createdAt === "string" ? g.createdAt : new Date().toISOString(),
+    purchasedAt: typeof g.purchasedAt === "string" ? g.purchasedAt : undefined,
     isSample: g.isSample === true ? true : undefined,
   };
 }
