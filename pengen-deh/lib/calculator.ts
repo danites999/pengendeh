@@ -103,3 +103,38 @@ export function categoryTotals(goals: Goal[]) {
   goals.forEach((g) => map.set(g.category, (map.get(g.category) ?? 0) + totalTarget(g)));
   return [...map.entries()].map(([category, value]) => ({ category, value }));
 }
+
+/* ---------- Status "on track" ---------- */
+export interface Pace {
+  status: "notstarted" | "ahead" | "ontrack" | "behind" | "overdue";
+  diff: number; // aktual - seharusnya hari ini (negatif = tertinggal)
+  planned: number; // setoran per periode menurut rencana awal
+  catchUp: number; // setoran per periode yang dibutuhkan sekarang agar tetap tepat waktu
+}
+
+export function paceStatus(g: Goal): Pace {
+  const today = todayISO();
+  const pick = (n: Needs) => (g.frequency === "harian" ? n.perDay : g.frequency === "mingguan" ? n.perWeek : n.perMonth);
+  const planned = pick(calcNeeds(Math.max(0, totalTarget(g) - g.initialBalance), g.startDate, g.targetDate));
+  const diff = savedAmount(g) - Math.round(plannedAt(g, today));
+  const catchUp = pick(calcNeeds(remaining(g), g.startDate > today ? g.startDate : today, g.targetDate));
+  let status: Pace["status"];
+  if (today < g.startDate) status = "notstarted";
+  else if (today >= g.targetDate && !isDone(g)) status = "overdue";
+  else status = diff < -planned * 0.5 ? "behind" : diff > planned ? "ahead" : "ontrack";
+  return { status, diff, planned, catchUp };
+}
+
+/* ---------- Kapasitas & streak ---------- */
+export const monthlyNeed = (g: Goal) => calcNeeds(remaining(g), g.startDate > todayISO() ? g.startDate : todayISO(), g.targetDate).perMonth;
+
+/** Hari berturut-turut ada setoran (dari semua target). Streak tetap hidup selama kemarin ada setoran. */
+export function streakInfo(goals: Goal[]) {
+  const dates = new Set(goals.flatMap((g) => g.deposits.map((d) => d.date)));
+  const today = todayISO();
+  const doneToday = dates.has(today);
+  let cur = doneToday ? today : addDays(today, -1);
+  let streak = 0;
+  while (dates.has(cur)) { streak++; cur = addDays(cur, -1); }
+  return { streak, doneToday };
+}
