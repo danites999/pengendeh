@@ -1,18 +1,20 @@
 "use client";
 import type { Goal } from "@/types";
-import { calcNeeds, daysLeft, fmtDate, isDone, progressPct, remaining, savedAmount, todayISO, totalTarget } from "@/lib/calculator";
+import { calcNeeds, daysLeft, fmtDate, isDone, paceStatus, progressPct, remaining, savedAmount, todayISO, totalTarget } from "@/lib/calculator";
 import { catOf } from "@/lib/categories";
 import { Rp } from "./Privacy";
 
-interface Props { goal: Goal; onDeposit: () => void; onEdit: () => void; onDelete: () => void; onRemoveDeposit: (id: string) => void }
+interface Props { goal: Goal; onDeposit: () => void; onEdit: () => void; onDelete: () => void; onRemoveDeposit: (id: string) => void; onPurchase?: () => void }
 
-export default function GoalCard({ goal, onDeposit, onEdit, onDelete, onRemoveDeposit }: Props) {
+export default function GoalCard({ goal, onDeposit, onEdit, onDelete, onRemoveDeposit, onPurchase }: Props) {
   const cat = catOf(goal.category);
   const done = isDone(goal);
   const pct = progressPct(goal);
   const left = daysLeft(goal);
   const today = todayISO();
   const n = calcNeeds(remaining(goal), goal.startDate > today ? goal.startDate : today, goal.targetDate);
+  const pace = paceStatus(goal);
+  const unit = goal.frequency === "harian" ? "hari" : goal.frequency === "mingguan" ? "minggu" : "bulan";
   const countdown = done ? "🎉 Tercapai!" : left < 0 ? `Lewat ${-left} hari` : left === 0 ? "Hari ini batasnya!" : `${left} hari lagi`;
 
   return (
@@ -44,6 +46,15 @@ export default function GoalCard({ goal, onDeposit, onEdit, onDelete, onRemoveDe
         </div>
       )}
 
+      {!done && pace.status !== "notstarted" && (
+        <p className={`rounded-xl border-2 border-line px-3 py-2 text-sm font-semibold ${pace.status === "behind" || pace.status === "overdue" ? "bg-pink/20" : "bg-mint/20"}`}>
+          {pace.status === "ontrack" && "✅ Sesuai rencana. Pertahankan!"}
+          {pace.status === "ahead" && <>🚀 Lebih cepat <Rp value={pace.diff} /> dari rencana.</>}
+          {pace.status === "behind" && <>⏳ Tertinggal <Rp value={-pace.diff} /> dari rencana.{pace.catchUp > pace.planned && <> Naikkan setoran jadi <Rp value={pace.catchUp} /> per {unit} supaya tetap tepat waktu.</>}</>}
+          {pace.status === "overdue" && "⚠️ Sudah lewat tanggal target. Atur ulang tanggalnya lewat tombol edit."}
+        </p>
+      )}
+
       <details className="text-sm">
         <summary className="cursor-pointer font-semibold">Rincian & riwayat setoran</summary>
         <ul className="mt-2 space-y-1">
@@ -64,7 +75,7 @@ export default function GoalCard({ goal, onDeposit, onEdit, onDelete, onRemoveDe
       </details>
 
       <footer className="mt-auto flex gap-2">
-        <button className="btn btn-primary flex-1" onClick={onDeposit}>+ Catat Tabungan</button>
+        {done && onPurchase ? <button className="btn btn-primary flex-1" onClick={onPurchase}>✅ Tandai sudah dibeli</button> : <button className="btn btn-primary flex-1" onClick={onDeposit}>+ Catat Tabungan</button>}
         <button className="btn" onClick={onEdit} aria-label="Edit impian">✏️</button>
         <button className="btn" onClick={onDelete} aria-label="Hapus impian">🗑</button>
       </footer>
